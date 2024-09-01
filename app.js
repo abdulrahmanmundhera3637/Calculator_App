@@ -23,10 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
             // Replace any invalid characters before evaluating
             const sanitizedText = display.innerText.replace(/[^0-9+\-*/.]/g, '');
             const result = eval(sanitizedText);
-            
+  
             // Check if result is a number and within the valid range
             if (!isNaN(result) && result <= 999999999999) {
-              display.innerText = result;
+              // Format result to avoid scientific notation
+              display.innerText = Number(result).toLocaleString('en-US', { maximumFractionDigits: 12 });
             } else {
               display.innerText = "Error!";
             }
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (buttonId === ".") {
             const currentText = display.innerText;
             const lastPart = currentText.split(/[\+\-\*\/]/).pop();
-            
+  
             // Ensure only one decimal per number
             if (!/[\d]*\.[\d]*$/.test(lastPart)) {
               display.innerText += ".";
@@ -50,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
   
-        // Prevent display overflow
+        // Prevent display overflow and handle number length
         if (display.innerText.length > 12) {
           display.innerText = display.innerText.slice(0, 12);
         }
